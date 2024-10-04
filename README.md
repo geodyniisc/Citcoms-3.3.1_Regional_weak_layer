@@ -18,32 +18,6 @@ This is are changes the changes that I included, which are to be read from input
 	weak_layer_no= give the mat_layer no in which the weak layer to be generated
  	weak_layer_ff= viscosity pre-factor in the weak layer.
 
-The regional weak layer only now  works for rheol=3, but can be added to other cases, example shown below:
-
-
-	   /* consistent handling : l is (material number - 1) to allow
-       addressing viscosity arrays, which are all 0...n-1  */
-    switch (E->viscosity.RHEOL)   {
-     case 1:
-        /* eta = N_0 exp( E * (T_0 - T))  */
-        for(m=1;m<=E->sphere.caps_per_proc;m++)
-            for(i=1;i<=nel;i++)   {
-                l = E->mat[m][i] - 1;
-
-                if(E->control.mat_control==0)
-                    tempa = E->viscosity.N0[l];
-                else 
-                    tempa = E->viscosity.N0[l]*E->VIP[m][i];
-
-                for(kk=1;kk<=ends;kk++) {
-                    TT[kk] = E->T[m][E->ien[m][i].node[kk]];
-                }
-
-                for(jj=1;jj<=vpts;jj++) {
-                    temp=0.0;
-                    for(kk=1;kk<=ends;kk++)   {
-                        temp += TT[kk] * E->N.vpt[GNVINDEX(kk,jj)];
-                    }
 /* Modified by Debanjan Pal to introduce regional weak layer below 660 when there is slab */
 
 		 /* layer number n-1 */
